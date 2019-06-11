@@ -5,10 +5,13 @@ metadata:
   name: app-lb
   namespace: spring-on-k8s
 spec:
+  # Create a LoadBalancer on port 80, which will redirect network traffic
+  # to any running pods listening on port 8080.
   type: LoadBalancer
   ports:
     - port: 80
       protocol: TCP
       targetPort: 8080
   selector:
+    # This selector is used to locate which pods this LoadBalancer is targeting.
     role: app

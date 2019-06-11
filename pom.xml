@@ -27,6 +27,8 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
+        <!-- This dependency is not actually required to run this app in a K8s cluster
+        but it allows you to expose app metrics to a running Prometheus instance -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
