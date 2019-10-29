@@ -30,6 +30,9 @@ spec:
           # Make sure to update this property, and use your own Docker image.
           image: alexandreroman/spring-on-k8s
           imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: 1Gi
           ports:
             - containerPort: 8080
           # We use a LivenessProbe and a ReadinessProbe to mark this pod
