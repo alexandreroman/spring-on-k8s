@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.demos.springonk8s;
+package com.vmware.demos.springonk8s;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Pivotal Software, Inc.
+ * Copyright (c) 2020 VMware, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.demos.springonk8s;
+package com.vmware.demos.springonk8s;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

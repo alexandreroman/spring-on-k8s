@@ -24,4 +24,4 @@ COPY --from=BUILDER ${DEPENDENCY}/BOOT-INF/classes /app
 # Since this container is using Java 11+, you don't need to add extra args:
 # '+UseContainerSupport' is enabled by default to automatically tune JVM memory
 # settings according to container memory resources.
-ENTRYPOINT ["java","-cp","app:app/lib/*","io.pivotal.demos.springonk8s.Application"]
+ENTRYPOINT ["java","-cp","app:app/lib/*","com.vmware.demos.springonk8s.Application"]
