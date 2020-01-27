@@ -29,7 +29,7 @@ spec:
         - name: app
           # Make sure to update this property, and use your own Docker image.
           image: alexandreroman/spring-on-k8s
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           resources:
             limits:
               memory: 1Gi
