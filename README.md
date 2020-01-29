@@ -1,4 +1,4 @@
-# Run your Spring Boot app on Kubernetes
+# Running your Spring Boot app on Kubernetes
 
 This project describes how to run your Spring Boot app on Kubernetes.
 You don't actually need to rewrite your app in order to target a K8s
@@ -118,6 +118,6 @@ Feel free to open issues & send PR.
 
 ## License
 
-Copyright &copy; 2019 [Pivotal Software, Inc](https://pivotal.io).
+Copyright &copy; 2020 [VMware, Inc](https://vmware.com).
 
 This project is licensed under the [Apache Software License version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
