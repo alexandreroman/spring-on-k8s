@@ -2,7 +2,7 @@
 
 This project describes how to run your Spring Boot app on Kubernetes.
 You don't actually need to rewrite your app in order to target a K8s
-cluster: Spring Boot can run on a large number of platforms, thanks to
+cluster: Spring Boot can run on many platforms, thanks to
 the abstraction level it provides.
 
 This app is made of a single REST controller:
@@ -118,6 +118,6 @@ Feel free to open issues & send PR.
 
 ## License
 
-Copyright &copy; 2020 [VMware, Inc](https://vmware.com).
+Copyright &copy; 2020 [VMware, Inc. or its affiliates](https://vmware.com).
 
 This project is licensed under the [Apache Software License version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
