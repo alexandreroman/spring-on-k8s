@@ -18,7 +18,7 @@ class HelloController {
 
 ## How to use it?
 
-Compile this app using a JDK 8+:
+Compile this app using a JDK 11+:
 ```bash
 $ ./mvnw clean package
 ```
@@ -41,26 +41,33 @@ this app in a Docker image.
 
 Here's a `Dockerfile` you can use:
 ```Dockerfile
-# 1. First we build this app.
-FROM adoptopenjdk:8-jdk-hotspot as BUILDER
+# 1. First build we build this app.
+FROM adoptopenjdk:11-jdk-hotspot as BUILDER
 RUN mkdir /build
 ADD . /build
 WORKDIR /build
 # Use Maven wrapper script to build & test this app.
 RUN ./mvnw -B clean package
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-# As this point the app is fully built & tested,
-# and the artifact is waiting in /build/target.
+# As this point the app is built & tested,
+# and the artifact is available in /build/target.
 
 # 2. We build the target image, containing the app artifact.
-FROM adoptopenjdk:8-jre-hotspot
+FROM adoptopenjdk:11-jre-hotspot
+VOLUME /tmp
 # We don't want to run this app as root, so let's create a new user.
 RUN useradd -m -s /bin/bash app
 USER app
-# Copy app artifact from previous run.
-COPY --from=BUILDER /build/target/spring-on-k8s.jar /home/app
-# Let the JVM know we are running in a containerized environment.
-ENTRYPOINT [ "java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-jar", "/home/app/spring-on-k8s.jar" ]
+# Copy the app artifact from the previous run.
+ARG DEPENDENCY=/build/target/dependency
+COPY --from=BUILDER ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=BUILDER ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=BUILDER ${DEPENDENCY}/BOOT-INF/classes /app
+# Since this container is using Java 11+, you don't need to add extra args:
+# '+UseContainerSupport' is enabled by default to automatically tune JVM memory
+# settings according to container memory resources.
+ENTRYPOINT ["java","-cp","app:app/lib/*","com.vmware.demos.springonk8s.Application"]
 ```
 
 Run this command to build this image:
