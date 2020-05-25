@@ -29,24 +29,27 @@ spec:
         - name: app
           # Make sure to update this property, and use your own Docker image.
           image: alexandreroman/spring-on-k8s
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           resources:
             limits:
               memory: 1Gi
           ports:
-            - containerPort: 8080
+            - name: http
+              containerPort: 8080
           # We use a LivenessProbe and a ReadinessProbe to mark this pod
           # as ready as soon as the app is actually running.
           # Using these K8s features, network traffic will not be sent to this app
           # until this endpoint returns a 200 OK response.
           livenessProbe:
             httpGet:
-              port: 8080
-              path: /actuator/health
-            initialDelaySeconds: 60
-            periodSeconds: 2
+              port: http
+              path: /actuator/health/liveness
+            initialDelaySeconds: 10
+            failureThreshold: 3
+            periodSeconds: 1
           readinessProbe:
             httpGet:
-              port: 8080
-              path: /actuator/health
-            initialDelaySeconds: 15
+              port: http
+              path: /actuator/health/readiness
+            initialDelaySeconds: 10
+            failureThreshold: 6

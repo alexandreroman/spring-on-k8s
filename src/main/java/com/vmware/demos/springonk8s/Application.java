@@ -18,9 +18,9 @@ package com.vmware.demos.springonk8s;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 public class Application {
@@ -31,11 +31,9 @@ public class Application {
 
 @RestController
 class HelloController {
-    @GetMapping("/")
-    public Mono<String> greeting() {
+    @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+    String greeting() {
         // Just return a simple String.
-        // This app is using reactive programming, but feel free to use legacy
-        // REST controllers: it's up to you!
-        return Mono.just("Hello world!");
+        return "Hello world!";
     }
 }

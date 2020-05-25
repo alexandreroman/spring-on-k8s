@@ -20,14 +20,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.reactive.server.WebTestClient;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApplicationTests {
     @Autowired
-    private WebTestClient webClient;
+    private TestRestTemplate webClient;
 
     @Test
     public void contextLoads() {
@@ -35,20 +38,16 @@ public class ApplicationTests {
 
     @Test
     public void testGreeting() {
-        webClient.get().uri("/").exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class).isEqualTo("Hello world!");
+        assertThat(webClient.getForObject("/", String.class)).isEqualTo("Hello world!");
     }
 
     @Test
     public void testPrometheus() {
-        webClient.get().uri("/actuator/prometheus").exchange()
-                .expectStatus().isOk();
+        assertThat(webClient.getForEntity("/actuator/prometheus", String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     public void testHealth() {
-        webClient.get().uri("/actuator/health").exchange()
-                .expectStatus().isOk();
+        assertThat(webClient.getForEntity("/actuator/health", String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }
