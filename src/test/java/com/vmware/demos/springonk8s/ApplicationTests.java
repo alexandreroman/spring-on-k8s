@@ -16,17 +16,14 @@
 
 package com.vmware.demos.springonk8s;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApplicationTests {
     @Autowired
@@ -39,11 +36,6 @@ public class ApplicationTests {
     @Test
     public void testGreeting() {
         assertThat(webClient.getForObject("/", String.class)).isEqualTo("Hello world!");
-    }
-
-    @Test
-    public void testPrometheus() {
-        assertThat(webClient.getForEntity("/actuator/prometheus", String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test

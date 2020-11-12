@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app
-  namespace: spring-on-k8s
 spec:
   # Set how many pods we want for this app.
   replicas: 1
@@ -28,7 +27,7 @@ spec:
       containers:
         - name: app
           # Make sure to update this property, and use your own Docker image.
-          image: alexandreroman/spring-on-k8s
+          image: alexandreroman/spring-on-k8s:latest
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -54,3 +53,10 @@ spec:
             initialDelaySeconds: 30
             failureThreshold: 2
             periodSeconds: 1
+          volumeMounts:
+            - mountPath: /etc/config
+              name: config
+      volumes:
+        - name: config
+          configMap:
+            name: config

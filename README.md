@@ -9,16 +9,20 @@ This app is made of a single REST controller:
 ```java
 @RestController
 class HelloController {
-    @GetMapping("/")
-    public Mono<String> greeting() {
-        return Mono.just("Hello world!");
+    @Value("${app.message:Hello world!}")
+    private String message;
+
+    @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+    String greeting() {
+        // Just return a simple String.
+        return message;
     }
 }
 ```
 
 ## How to use it?
 
-Compile this app using a JDK 11+:
+Compile this app using a JDK 15+:
 ```bash
 $ ./mvnw clean package
 ```
@@ -81,13 +85,9 @@ $ docker push myrepo/spring-on-k8s
 ```
 
 As an alternative, you can use [Cloud Native Buildpacks](https://buildpacks.io)
-to build & deploy your Docker image.
-
-Granted you have the [pack](https://github.com/buildpack/pack) 
-CLI installed on your workstation, you can run this command
-to build & deploy a Docker image:
+to build & deploy your Docker image:
 ```bash
-$ pack build myrepo/spring-on-k8s --publish
+$ ./mvnw spring:build-image -Dimage.name=myrepo/spring-on-k8s
 ```
 
 This command will take care of building a Docker image containing
@@ -99,7 +99,7 @@ JAR file, different layers for app/config/lib).
 This project includes Kubernetes descriptors, so you can easily deploy
 this app to your favorite K8s cluster:
 ```bash
-$ kubectl apply -f k8s
+$ kubectl apply -k k8s
 ```
 
 Using this command, monitor the allocated IP address for this app:
@@ -114,7 +114,7 @@ At some point, you should see an IP address under the column `EXTERNAL-IP`.
 If you hit this address, you will get a greeting message from the app:
 ```bash
 $ curl 35.205.141.26
-Hello world!%
+Hello Kubernetes!%
 ```
 
 ## Contribute
