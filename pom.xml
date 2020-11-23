@@ -14,7 +14,7 @@
     <description>See how easy it is to run a Spring Boot app on Kubernetes</description>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>11</java.version>
         <image.name>alexandreroman/spring-on-k8s</image.name>
     </properties>
 
