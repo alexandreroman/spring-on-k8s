@@ -1,16 +1,8 @@
 # Enable actuator endpoints:
 #  - health: used by LivenessProbe and ReadinessProbe to mark this app as running
 #  - prometheus: used by Prometheus to scrape app metrics
-#  - dev: used by Spring Boot Devtools for hot reloading
 management:
   endpoints:
     web:
       exposure:
-        include: health, prometheus, dev
-
-# Set a secret shared by this app and Spring Boot Devtools.
-# Using Devtools you can hot reload your app as you update your source code for example.
-spring:
-  devtools:
-    remote:
-      secret: OMG this is plain text secret!
+        include: health, prometheus
