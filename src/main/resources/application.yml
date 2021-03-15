@@ -14,12 +14,3 @@ spring:
   devtools:
     remote:
       secret: OMG this is plain text secret!
-
----
-
-# Read the ConfigMap mounted as a volume under /etc/config.
-spring:
-  config:
-    activate:
-      on-cloud-platform: kubernetes
-    import: configtree:/etc/config/

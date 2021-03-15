@@ -53,6 +53,10 @@ spec:
             initialDelaySeconds: 30
             failureThreshold: 2
             periodSeconds: 1
+          env:
+            # Read the ConfigMap mounted as a volume under /etc/config.
+            - name: SPRING_CONFIG_IMPORT
+              value: configtree:/etc/config/
           volumeMounts:
             - mountPath: /etc/config
               name: config
