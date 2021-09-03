@@ -43,48 +43,7 @@ Hello world!%
 Our goal is to run this app in a K8s cluster: you first need to package
 this app in a Docker image.
 
-Here's a `Dockerfile` you can use:
-```Dockerfile
-# 1. First build we build this app.
-FROM adoptopenjdk:11-jdk-hotspot as BUILDER
-RUN mkdir /build
-ADD . /build
-WORKDIR /build
-# Use Maven wrapper script to build & test this app.
-RUN ./mvnw -B clean package
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
-
-# As this point the app is built & tested,
-# and the artifact is available in /build/target.
-
-# 2. We build the target image, containing the app artifact.
-FROM adoptopenjdk:11-jre-hotspot
-VOLUME /tmp
-# We don't want to run this app as root, so let's create a new user.
-RUN useradd -m -s /bin/bash app
-USER app
-# Copy the app artifact from the previous run.
-ARG DEPENDENCY=/build/target/dependency
-COPY --from=BUILDER ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=BUILDER ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=BUILDER ${DEPENDENCY}/BOOT-INF/classes /app
-# Since this container is using Java 11+, you don't need to add extra args:
-# '+UseContainerSupport' is enabled by default to automatically tune JVM memory
-# settings according to container memory resources.
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.vmware.demos.springonk8s.Application"]
-```
-
-Run this command to build this image:
-```bash
-$ docker build -t myrepo/spring-on-k8s .
-```
-
-You can now push this image to your favorite Docker registry:
-```bash
-$ docker push myrepo/spring-on-k8s
-```
-
-As an alternative, you can use [Cloud Native Buildpacks](https://buildpacks.io)
+Use [Cloud Native Buildpacks](https://buildpacks.io)
 to build & deploy your Docker image:
 ```bash
 $ ./mvnw spring-boot:build-image -Dimage.name=myrepo/spring-on-k8s
@@ -93,6 +52,9 @@ $ ./mvnw spring-boot:build-image -Dimage.name=myrepo/spring-on-k8s
 This command will take care of building a Docker image containing
 a base image, a JRE, and this image will be optimized (unzipped
 JAR file, different layers for app/config/lib).
+
+As you can see, you don't need a `Dockerfile` when using Cloud-Native Buildpacks
+for building a Docker image: that's magic!
 
 ## Deploying to Kubernetes
 
