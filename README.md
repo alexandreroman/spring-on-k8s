@@ -87,7 +87,7 @@ $ docker push myrepo/spring-on-k8s
 As an alternative, you can use [Cloud Native Buildpacks](https://buildpacks.io)
 to build & deploy your Docker image:
 ```bash
-$ ./mvnw spring:build-image -Dimage.name=myrepo/spring-on-k8s
+$ ./mvnw spring-boot:build-image -Dimage.name=myrepo/spring-on-k8s
 ```
 
 This command will take care of building a Docker image containing
