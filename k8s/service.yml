@@ -8,9 +8,9 @@ spec:
   # to any running pods listening on port 8080.
   type: LoadBalancer
   ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 8080
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
   selector:
     # This selector is used to locate which pods this LoadBalancer is targeting.
     role: app
