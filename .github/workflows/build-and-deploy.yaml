@@ -1,0 +1,53 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+    - main
+    - testing
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  APP_IMAGE: ghcr.io/alexandreroman/spring-on-k8s
+  JAVA_VERSION: 17
+
+jobs:
+  test-app:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: ${{ env.JAVA_VERSION }}
+        cache: maven
+    - name: Test app
+      run: mvn -B test
+
+  deploy-image:
+    needs:
+    - test-app
+    runs-on: ubuntu-latest
+    steps:
+    - uses: buildpacks/github-actions/setup-pack@v5.5.1
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Log in to the container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build and deploy image
+      run: |
+        sudo apt-get install -y libxml2-utils
+        mvn help:effective-pom -Doutput=pom-effective.xml
+        CNB_IMAGE=`xmllint --xpath "//*[local-name()='execution']//*[local-name()='image']/*[local-name()='name']/text()" pom-effective.xml`
+        CNB_BUILDER=`xmllint --xpath "//*[local-name()='execution']//*[local-name()='image']/*[local-name()='builder']/text()" pom-effective.xml`
+        pack build $CNB_IMAGE --builder $CNB_BUILDER -e BP_JVM_VERSION=$JAVA_VERSION --publish

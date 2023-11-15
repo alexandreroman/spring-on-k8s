@@ -15,7 +15,6 @@
 
     <properties>
         <java.version>11</java.version>
-        <image.name>ghcr.io/alexandreroman/spring-on-k8s</image.name>
     </properties>
 
     <dependencies>
@@ -58,7 +57,7 @@
                 <configuration>
                     <image>
                         <builder>paketobuildpacks/builder-jammy-base:latest</builder>
-                        <name>${image.name}</name>
+                        <name>ghcr.io/alexandreroman/spring-on-k8s</name>
                     </image>
                 </configuration>
             </plugin>
