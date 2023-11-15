@@ -46,7 +46,21 @@ this app in a Docker image.
 Use [Cloud Native Buildpacks](https://buildpacks.io)
 to build & deploy your Docker image:
 ```bash
-$ ./mvnw spring-boot:build-image -Dimage.name=myrepo/spring-on-k8s
+$ ./mvnw spring-boot:build-image
+```
+
+If you need to use a different image name, please edit `pom.xml`:
+
+```xml
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <configuration>
+        <image>
+            <name>myrepo/spring-on-k8s</name>
+        </image>
+    </configuration>
+</plugin>
 ```
 
 This command will take care of building a Docker image containing
@@ -87,6 +101,6 @@ Feel free to open issues & send PR.
 
 ## License
 
-Copyright &copy; 2022 [VMware, Inc. or its affiliates](https://vmware.com).
+Copyright &copy; 2023 [VMware, Inc. or its affiliates](https://vmware.com).
 
 This project is licensed under the [Apache Software License version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
