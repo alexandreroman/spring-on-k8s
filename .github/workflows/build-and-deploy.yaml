@@ -11,7 +11,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_IMAGE: ghcr.io/alexandreroman/spring-on-k8s
   JAVA_VERSION: 17
 
 jobs:
@@ -49,5 +48,4 @@ jobs:
         sudo apt-get install -y libxml2-utils
         mvn help:effective-pom -Doutput=pom-effective.xml
         CNB_IMAGE=`xmllint --xpath "//*[local-name()='execution']//*[local-name()='image']/*[local-name()='name']/text()" pom-effective.xml`
-        CNB_BUILDER=`xmllint --xpath "//*[local-name()='execution']//*[local-name()='image']/*[local-name()='builder']/text()" pom-effective.xml`
-        pack build $CNB_IMAGE --builder $CNB_BUILDER -e BP_JVM_VERSION=$JAVA_VERSION --publish
+        pack build $CNB_IMAGE --builder paketobuildpacks/builder-jammy-base -e BP_JVM_VERSION=$JAVA_VERSION --publish

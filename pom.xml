@@ -14,7 +14,7 @@
     <description>See how easy it is to run a Spring Boot app on Kubernetes</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
@@ -52,15 +52,49 @@
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
                         <name>ghcr.io/alexandreroman/spring-on-k8s</name>
                     </image>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>native</id>
+            <activation>
+                <os>
+                    <!-- This profile is only used when building the app on arm64 systems -->
+                    <arch>aarch64</arch>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <image>
+                                <!-- Use a builder which is compatible with arm64 -->
+                                <builder>dashaun/builder:tiny</builder>
+                                <env>
+                                    <!-- Set a page size when building a native image for arm64
+                                     which is compatible with most arm64 CPUs and kernels such as Apple Silicon and Raspberry Pi -->
+                                    <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-H:PageSize=65536</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                                </env>
+                            </image>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

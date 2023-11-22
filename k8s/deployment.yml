@@ -30,6 +30,8 @@ spec:
         image: ghcr.io/alexandreroman/spring-on-k8s
         imagePullPolicy: IfNotPresent
         resources:
+          requests:
+            memory: 1Gi
           limits:
             memory: 1Gi
         ports:

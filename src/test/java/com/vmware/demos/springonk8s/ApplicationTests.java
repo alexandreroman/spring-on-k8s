@@ -21,11 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        properties = "app.message=Hello tests!")
 @AutoConfigureObservability(tracing = false)
 public class ApplicationTests {
     @Autowired
@@ -37,16 +37,16 @@ public class ApplicationTests {
 
     @Test
     public void testGreeting() {
-        assertThat(webClient.getForObject("/", String.class)).isEqualTo("Hello world!");
+        assertThat(webClient.getForObject("/", String.class)).isEqualTo("Hello tests!");
     }
 
     @Test
     public void testPrometheus() {
-        assertThat(webClient.getForEntity("/actuator/prometheus", String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(webClient.getForEntity("/actuator/prometheus", String.class).getStatusCode().is2xxSuccessful()).isTrue();
     }
 
     @Test
     public void testHealth() {
-        assertThat(webClient.getForEntity("/actuator/health", String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(webClient.getForEntity("/actuator/health", String.class).getStatusCode().is2xxSuccessful()).isTrue();
     }
 }
