@@ -45,14 +45,14 @@ spec:
           httpGet:
             port: http
             path: /actuator/health/liveness
-          initialDelaySeconds: 20
+          initialDelaySeconds: 10
           failureThreshold: 20
           periodSeconds: 1
         readinessProbe:
           httpGet:
             port: http
             path: /actuator/health/readiness
-          initialDelaySeconds: 30
+          initialDelaySeconds: 10
           failureThreshold: 2
           periodSeconds: 1
         env:

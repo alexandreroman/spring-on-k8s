@@ -75,7 +75,7 @@ for building a Docker image: that's magic!
 This project includes Kubernetes descriptors, so you can easily deploy
 this app to your favorite K8s cluster:
 ```bash
-$ kubectl apply -k k8s
+$ kubectl apply -k k8s/base
 ```
 
 Using this command, monitor the allocated IP address for this app:
@@ -91,6 +91,16 @@ If you hit this address, you will get a greeting message from the app:
 ```bash
 $ curl 35.205.141.26
 Hello Kubernetes!%
+```
+
+You can also rely on your ingress controller to expose the app.
+Edit the file [k8s/ingress/ingress.yml](k8s/ingress/ingress.yml)
+and set the domain name accordingly.
+
+Then run this command:
+
+```bash
+kubectl apply -k k8s/ingress
 ```
 
 ## Contribute
