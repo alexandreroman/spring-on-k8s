@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.vmware.demos.springonk8s;
+package com.broadcom.tanzu.demos.springonk8s;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

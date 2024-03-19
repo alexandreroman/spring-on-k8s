@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package com.vmware.demos.springonk8s;
+package com.broadcom.tanzu.demos.springonk8s;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@RestController
-class HelloController {
-    @Value("${app.message:Hello world!}")
-    private String message;
-
-    @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-    String greeting() {
-        // Just return a simple String.
-        return message;
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 }
