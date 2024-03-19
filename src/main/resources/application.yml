@@ -1,3 +1,11 @@
+spring:
+  application:
+    name: spring-on-k8s
+
+server:
+  # Use the value of the environment variable PORT (or 8080 as default value).
+  port: ${PORT:8080}
+
 management:
   endpoints:
     web:
