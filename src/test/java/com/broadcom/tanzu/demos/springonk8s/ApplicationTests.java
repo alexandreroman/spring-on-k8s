@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalManagementPort;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +31,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ApplicationTests {
     @Autowired
     private TestRestTemplate webClient;
+    @LocalManagementPort
+    private int managementPort;
 
     @Test
     public void contextLoads() {
@@ -42,11 +45,15 @@ public class ApplicationTests {
 
     @Test
     public void testPrometheus() {
-        assertThat(webClient.getForEntity("/actuator/prometheus", String.class).getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(webClient.getForEntity("http://localhost:" + managementPort + "/actuator/prometheus", String.class).getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(webClient.getForEntity("/actuator/prometheus", String.class).getStatusCode().isError()).isTrue();
     }
 
     @Test
     public void testHealth() {
-        assertThat(webClient.getForEntity("/actuator/health", String.class).getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(webClient.getForEntity("http://localhost:" + managementPort + "/actuator/health", String.class).getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(webClient.getForEntity("/actuator/health", String.class).getStatusCode().isError()).isTrue();
+        assertThat(webClient.getForEntity("/livez", String.class).getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(webClient.getForEntity("/readyz", String.class).getStatusCode().is2xxSuccessful()).isTrue();
     }
 }

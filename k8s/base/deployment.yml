@@ -22,7 +22,7 @@ spec:
         # This app will run just fine even if Prometheus is not running.
         prometheus.io/scrape: "true"
         prometheus.io/path: "/actuator/prometheus"
-        prometheus.io/port:  "8080"
+        prometheus.io/port:  "8081"
     spec:
       containers:
       - name: app
@@ -44,14 +44,14 @@ spec:
         livenessProbe:
           httpGet:
             port: http
-            path: /actuator/health/liveness
+            path: /livez
           initialDelaySeconds: 10
           failureThreshold: 20
           periodSeconds: 1
         readinessProbe:
           httpGet:
             port: http
-            path: /actuator/health/readiness
+            path: /readyz
           initialDelaySeconds: 10
           failureThreshold: 2
           periodSeconds: 1

@@ -20,3 +20,9 @@ management:
         # Always enable health probes: whenever you build native images with GraalVM,
         # you need to set this property to true.
         enabled: true
+        # Health probes are also available on the main server port
+        # with /readyz and /livez
+        add-additional-paths: true
+  server:
+    # Expose actuator endpoints on a different port to improve security.
+    port: 8081
