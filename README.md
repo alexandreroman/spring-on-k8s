@@ -111,6 +111,6 @@ Feel free to open issues & send PR.
 
 ## License
 
-Copyright &copy; 2024 [Broadcom, Inc. or its affiliates](https://tanzu.vmware.com).
+Copyright &copy; 2025 [Broadcom, Inc. or its affiliates](https://tanzu.vmware.com).
 
 This project is licensed under the [Apache Software License version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
