@@ -67,17 +67,9 @@ jobs:
     - name: Build image
       run: |
         ./mvnw -Pnative -DskipTests -B spring-boot:build-image
-    - name: Deploy linux/arm64 image
-      if: ${{ matrix.os == 'ubuntu-24.04-arm' }}
+    - name: Deploy image
       run: |
-        CNB_TAG=linux-arm64
-        CNB_IMAGE=${{ needs.test-app.outputs.imageName }}
-        docker tag $CNB_IMAGE:latest $CNB_IMAGE:$CNB_TAG
-        docker push $CNB_IMAGE:$CNB_TAG
-    - name: Deploy linux/amd64 image
-      if: ${{ matrix.os == 'ubuntu-24.04' }}
-      run: |
-        CNB_TAG=linux-amd64
+        CNB_TAG="linux-`dpkg --print-architecture`"
         CNB_IMAGE=${{ needs.test-app.outputs.imageName }}
         docker tag $CNB_IMAGE:latest $CNB_IMAGE:$CNB_TAG
         docker push $CNB_IMAGE:$CNB_TAG
