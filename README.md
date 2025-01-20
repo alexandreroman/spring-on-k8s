@@ -22,14 +22,14 @@ class HelloController {
 
 ## How to use it?
 
-Compile this app using a JDK 15+:
+Compile this app using a JDK 21+:
 ```bash
 $ ./mvnw clean package
 ```
 
 You can run this app on your workstation:
 ```bash
-$ java -jar target/spring-on-k8s.jar
+$ ./mvnw spring-boot:run
 ```
 
 The app is available at http://localhost:8080:
@@ -103,7 +103,7 @@ Then run this command:
 kubectl apply -k k8s/ingress
 ```
 
-## Contribute
+## Contributing
 
 Contributions are always welcome!
 
